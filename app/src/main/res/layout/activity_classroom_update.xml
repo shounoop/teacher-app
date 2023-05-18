@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_2"
+    android:orientation="vertical"
+    tools:context=".Classroom.ClassroomActivity">
+
+    <!--Linear Layout Avatar & Home shortcut -->
+    <fragment
+        android:id="@+id/topBar"
+        class="com.example.stdmanager.TopBarHomeIconFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_top_bar_home_icon"></fragment>
+
+    <!-- Student Table -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/mainBackground"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@color/mainBackground"
+            android:orientation="vertical">
+
+            <!-- Family Name & First Name -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/familyName"
+                        android:textColor="@color/mainText"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/classroomUpdateFamilyName"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/border"
+                        android:hint="@string/familyNameHint"
+                        android:inputType="text"
+                        android:textAlignment="center"
+                        tools:ignore="Autofill" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/firstName"
+                        android:textColor="@color/mainText"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/classroomUpdateFirstName"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/border"
+                        android:hint="@string/firstNameHint"
+                        android:inputType="text"
+                        android:textAlignment="center"
+                        tools:ignore="Autofill" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Gender -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gender"
+                    android:textColor="@color/mainText"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/classroomUpdateRadioButtonMale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/male"
+                        android:textColor="@color/mainText" />
+
+                    <RadioButton
+                        android:id="@+id/classroomUpdateRadioButtonFemale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:text="@string/female"
+                        android:textColor="@color/mainText" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <!-- Birthday -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/birthday"
+                    android:textColor="@color/mainText"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/classroomUpdateBirthday"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/border"
+                        android:focusable="false"
+                        android:hint="@string/ourBirthday"
+                        android:inputType="text"
+                        android:textAlignment="center" />
+
+                    <ImageButton
+                        android:id="@+id/classroomUpdateButtonBirthday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="openDatePicker"
+                        android:src="@drawable/calendar"
+                        tools:ignore="ContentDescription,OnClick" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/classroomUpdateButtonConfirm"
+                style="@style/button_style"
+                android:background="@drawable/button_background_1"
+                android:text="@string/student_creation" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/classroomUpdateButtonGoBack"
+                style="@style/button_style"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/button_background_3"
+                android:text="@string/goback" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

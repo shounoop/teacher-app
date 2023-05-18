@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_2"
+    android:orientation="vertical"
+    tools:context=".Subject.SubjectEditActivity">
+
+    <fragment
+        android:id="@+id/topBar"
+        class="com.example.stdmanager.TopBarHomeIconFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_top_bar_home_icon"></fragment>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rectangle_6"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="10dp"
+                android:text="@string/TitleEditSubject"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="42dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:letterSpacing="-0.03"
+                    android:lineSpacingExtra="-3sp"
+                    android:text="@string/NameEditSubject"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/txt_tenMH"
+                        android:layout_width="309dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/border"
+                        android:paddingLeft="10dp"
+                        android:text="Toán"
+                        android:textSize="20dp" />
+
+                    <ImageView
+                        android:id="@+id/errorName"
+                        android:layout_width="20dp"
+                        android:layout_height="18dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="20dp"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/info_icon" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:letterSpacing="-0.03"
+                    android:lineSpacingExtra="-3sp"
+                    android:text="@string/HKEditSubject"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/cb_HK1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/HK1EditSubject"
+                        android:textSize="20dp" />
+
+                    <CheckBox
+                        android:id="@+id/cb_HK2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/HK2EditSubject"
+                        android:textSize="20dp" />
+
+                    <ImageView
+
+                        android:id="@+id/errorHK"
+                        android:layout_width="20dp"
+                        android:layout_height="18dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="10dp"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/info_icon" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:letterSpacing="-0.03"
+                    android:lineSpacingExtra="-3sp"
+                    android:text="@string/HSEditSubject"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/txt_HeSo"
+                        android:layout_width="309dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/border"
+                        android:ems="10"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:paddingLeft="10dp"
+                        android:text="1"
+                        android:textSize="20dp" />
+
+                    <ImageView
+
+                        android:id="@+id/errorHS"
+                        android:layout_width="20dp"
+                        android:layout_height="18dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="20dp"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/info_icon" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:letterSpacing="-0.03"
+                    android:lineSpacingExtra="-3sp"
+                    android:text="@string/NHEditSubject"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/txt_namHoc"
+                        android:layout_width="309dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/border"
+                        android:ems="10"
+                        android:paddingLeft="10dp"
+                        android:text="@string/NHEditSubjectex"
+                        android:textSize="20dp"
+                        android:tooltipText="@string/NHEditSubjectex" />
+
+                    <ImageView
+
+                        android:id="@+id/errorNH"
+                        android:layout_width="20dp"
+                        android:layout_height="18dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="20dp"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/info_icon" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--Button-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:layout_weight="0"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/Btn_save"
+                    style="@style/button_style"
+                    android:background="@drawable/button_background_1"
+                    android:text="@string/SaveSubject" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/Btn_cancel"
+                    style="@style/button_style"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/button_background_5"
+                    android:text="@string/Cancel" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

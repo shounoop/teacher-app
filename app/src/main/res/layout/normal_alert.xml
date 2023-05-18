@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#ffffff">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
+
+        <ImageView
+            android:id="@+id/iconAlert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/check_icon" />
+
+        <TextView
+            android:id="@+id/msgText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_margin="15dp"
+            android:text="This is a popup window."
+            android:textAlignment="center"
+            android:textSize="22sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnOK"
+            style="@style/button_primary_style"
+            android:layout_width="150dp"
+            android:text="OK" />
+    </LinearLayout>
+</RelativeLayout>
