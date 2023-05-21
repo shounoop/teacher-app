@@ -30,15 +30,10 @@ import com.example.stdmanager.models.Session;
 import com.example.stdmanager.models.Teacher;
 
 public class SettingsAccountActivity extends AppCompatActivity {
-
-    LinearLayout name, password;
-    ImageView avatar;
-    Session session;
-    TeacherDBHelper teacherOpenHelper;
-    Teacher teacher;
-    AppCompatButton buttonAvatar;
-
-    private final static int RESULT_LOAD_IMAGE = 1;
+    private LinearLayout nameLinearLayout, passwordLinearLayout;
+    private Session session;
+    private TeacherDBHelper teacherOpenHelper;
+    private Teacher teacher;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -48,6 +43,7 @@ public class SettingsAccountActivity extends AppCompatActivity {
 
         session = new Session(SettingsAccountActivity.this);
         teacherOpenHelper = new TeacherDBHelper(this);
+
         int id = Integer.parseInt(session.get("teacherId"));
         teacher = teacherOpenHelper.getTeacher(id);
 
@@ -56,77 +52,22 @@ public class SettingsAccountActivity extends AppCompatActivity {
     }
 
     private void setControl() {
-        name = findViewById(R.id.linearLayoutName);
-        password = findViewById(R.id.linearLayoutPassword);
-//        avatar = findViewById(R.id.settingsAccountImageViewAvatar);
-//        buttonAvatar = findViewById(R.id.settingsAccountButtonChangeAvatar);
+        nameLinearLayout = findViewById(R.id.linearLayoutName);
+        passwordLinearLayout = findViewById(R.id.linearLayoutPassword);
     }
 
     private void setEvent() {
-        name.setOnClickListener(view -> {
+        nameLinearLayout.setOnClickListener(view -> {
             View popup = inflatePopupWindow(view, R.layout.activity_settings_account_edit_name);
             handleEventNameLayout(popup);
         });
 
-        password.setOnClickListener(view -> {
+        passwordLinearLayout.setOnClickListener(view -> {
             View popup = inflatePopupWindow(view, R.layout.activity_settings_account_edit_password);
             handleEventPasswordLayout(popup);
         });
-
-//        avatar.setOnClickListener(view -> {
-//            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//            startActivityForResult(intent, RESULT_LOAD_IMAGE);
-//        });
-
-//        buttonAvatar.setOnClickListener(view -> {
-//            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//            startActivityForResult(intent, RESULT_LOAD_IMAGE);
-//        });
     }
 
-    /**
-     * Step 1: retrieve Uri of selected image and store it into an array
-     * Step 2: utilize a cursor to take a query selected image. A cursor, in essence, works as array
-     * Step 3: the absolute path of selected image lies on column[0]
-     * Step 4: insert new avatar with drawable class
-     * Step 5: save selected image into database
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            /*Step 1*/
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-            /*Step 2*/
-            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-            cursor.moveToFirst();
-
-            /*Step 3*/
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);//picturePath contains the path of selected Image
-            cursor.close();
-
-            /*Step 4*/
-//            avatar.setImageURI(selectedImage);
-//            Drawable drawable = avatar.getDrawable();
-//            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-
-            /*Step 5*/
-            /* Here, i am able to write a block of code to save selected image into res/drawable folder but
-             * It is not possible to save anything into res/drawable: https://stackoverflow.com/a/5469993
-             * If we want to save images, we have to a remote database so as to store it
-             * */
-
-        } else {
-            Toast.makeText(this, "You have not selected and image", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    /**
-     * this functions is used to instantiate a pop-up window
-     */
     @SuppressLint("ClickableViewAccessibility")
     private View inflatePopupWindow(View view, int layout) {
         // inflate the layout of the popup window
@@ -140,23 +81,13 @@ public class SettingsAccountActivity extends AppCompatActivity {
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
         // show the popup window
-        // which view you pass in doesn't matter, it is only used for the window token
         popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
 
         InterfaceHelper.blurCurrentScreen(popupWindow);
 
-        // dismiss the popup window when touched
-        popupView.setOnTouchListener((v, event) -> {
-            popupWindow.dismiss();
-            return true;
-        });
-
         return popupView;
     }
 
-    /**
-     * this functions instantiate and listen event when we want to custom account's name
-     */
     private void handleEventNameLayout(View view) {
         /*Step 1*/
         Button saveButton = view.findViewById(R.id.settingsAccountButtonSaveName);
@@ -175,9 +106,6 @@ public class SettingsAccountActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * this functions instantiate and listen event when we want to custom account's name
-     */
     private void handleEventPasswordLayout(View view) {
         /*Step 1*/
         Button savePassword = view.findViewById(R.id.settingsAccountButtonSavePassword);
@@ -187,13 +115,12 @@ public class SettingsAccountActivity extends AppCompatActivity {
 
         /*Step 2*/
         savePassword.setOnClickListener(view1 -> {
-
             String pass = password.getText().toString();
             String newPass = newPassword.getText().toString();
             String confirmationPass = confirmationPassword.getText().toString();
 
-            boolean flag = checkInputData(pass, newPass, confirmationPass);
-            if (!flag) return;
+            boolean isValid = checkInputData(pass, newPass, confirmationPass);
+            if (!isValid) return;
 
             teacher.setPassword(newPass);
             teacherOpenHelper.updateTeacher(teacher);
@@ -201,9 +128,6 @@ public class SettingsAccountActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * this functions verify password which is typed, it checks if password is valid so as to change or not  ?
-     */
     private boolean checkInputData(String pass, String newPass, String confirmationPass) {
         if (pass.equals("") || newPass.equals("") || confirmationPass.equals("")) {
             Toast.makeText(SettingsAccountActivity.this, "Điền đầy đủ các trường dữ liệu !", Toast.LENGTH_SHORT).show();

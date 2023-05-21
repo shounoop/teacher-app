@@ -45,9 +45,6 @@ public class StudentOpenHelper extends SQLiteOpenHelper {
 
     }
 
-    /**
-     * @param student | object | the grade which is added to TABLE_GRADE
-     */
     public void create(Student student) {
         /*Step 1*/
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
@@ -73,9 +70,6 @@ public class StudentOpenHelper extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
-    /**
-     * @param student | object | the grade which is deleted from TABLE_GRADE
-     */
     public void delete(Student student) {
         /*Step 1*/
         int id = student.getId();
@@ -107,15 +101,10 @@ public class StudentOpenHelper extends SQLiteOpenHelper {
         sqLiteDatabase.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
     }
 
-    /**
-     * retrieve all students from TABLE STUDENT
-     */
     public ArrayList<Student> retrieveAllStudents() {
         ArrayList<Student> objects = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 
-        // the query retrieves data from the "student" table, including all columns,
-        // and also fetches the "name" column from the "grade" table
         String query = "SELECT s.*, g.name FROM student s INNER JOIN grade g ON s.gradeId = g.id";
         @SuppressLint("Recycle") Cursor cursor = sqLiteDatabase.rawQuery(query, null);
 
@@ -141,22 +130,13 @@ public class StudentOpenHelper extends SQLiteOpenHelper {
         return objects;
     }
 
-    /**
-     * Thuận lấy danh sách học torng trong 1 lớp
-     *
-     * @param grade
-     * @return
-     */
     public ArrayList<Student> getStudentInGrade(String grade) {
-        /*Step 1*/
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         ArrayList<Student> objects = new ArrayList<>();
 
-        /*Step 2*/
         String query = "SELECT s.*" + "FROM student s " + "WHERE s.gradeid =  " + grade;
         @SuppressLint("Recycle") Cursor cursor = sqLiteDatabase.rawQuery(query, null);
 
-        /*Step 3*/
         if (cursor.moveToFirst()) {
             do {
                 Student student = new Student();
@@ -177,7 +157,6 @@ public class StudentOpenHelper extends SQLiteOpenHelper {
 
         return objects;
     }
-
 
     public ArrayList<Student> retrieveStudentWithKeyword(String keyword) {
         /*Step 1*/
@@ -211,11 +190,7 @@ public class StudentOpenHelper extends SQLiteOpenHelper {
         return objects;
     }
 
-    /**
-     * retrieve number of grade
-     *
-     * @return int quantity
-     */
+
     private int count() {
         String query = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
@@ -228,14 +203,9 @@ public class StudentOpenHelper extends SQLiteOpenHelper {
         return quantity;
     }
 
-    /**
-     * count by gender
-     *
-     * @return list report total
-     */
     public ArrayList<ReportTotal> countByGender() {
 
-        ArrayList<ReportTotal> objects = new ArrayList<>();
+        ArrayList<ReportTotal> reportTotals = new ArrayList<>();
 
         String query = String.format("SELECT %s, count(id) FROM %s GROUP BY %s", COLUMN_GENDER, TABLE_NAME, COLUMN_GENDER);
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
@@ -246,16 +216,14 @@ public class StudentOpenHelper extends SQLiteOpenHelper {
             do {
                 Integer gender = cursor.getInt(0);
                 Double value = cursor.getDouble(1);
-                objects.add(new ReportTotal(gender == 0 ? "Nam" : "Nữ", value));
+
+                reportTotals.add(new ReportTotal(gender == 0 ? "Nam" : "Nữ", value));
             } while (cursor.moveToNext());
         }
 
-        return objects;
+        return reportTotals;
     }
 
-    /**
-     * create default records if there is nothing in Grade table
-     */
     private void createDefaultRecords() {
         /*Step 1*/
         int studentQuantity = this.count();

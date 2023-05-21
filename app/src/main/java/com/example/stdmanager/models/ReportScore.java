@@ -1,16 +1,10 @@
 package com.example.stdmanager.models;
 
 public class ReportScore {
-    int maHS;
-    double diem;
+    private int maHS;
+    private double diem;
 
     public ReportScore() {
-
-    }
-
-    public ReportScore(int maHS, double diem) {
-        this.maHS = maHS;
-        this.diem = diem;
     }
 
     public int getMaHS() {

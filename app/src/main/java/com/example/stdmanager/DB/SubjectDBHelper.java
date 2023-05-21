@@ -98,7 +98,6 @@ public class SubjectDBHelper extends SQLiteOpenHelper {
         }
     }
 
-
     public boolean deleteSubject(Subject subject) {
         try {
             int id = subject.getMaMH();

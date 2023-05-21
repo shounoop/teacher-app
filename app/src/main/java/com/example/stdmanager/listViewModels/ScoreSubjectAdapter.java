@@ -19,10 +19,9 @@ import com.example.stdmanager.models.Subject;
 import java.util.ArrayList;
 
 public class ScoreSubjectAdapter extends ArrayAdapter<Subject> {
-
-    Context context;
-    int resource;
-    ArrayList<Subject> data;
+    private Context context;
+    private int resource;
+    private ArrayList<Subject> data;
 
     public ScoreSubjectAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Subject> data) {
         super(context, resource, data);
@@ -39,14 +38,15 @@ public class ScoreSubjectAdapter extends ArrayAdapter<Subject> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         convertView = LayoutInflater.from(context).inflate(resource, null);
 
+        // init view
         TextView name = convertView.findViewById(R.id.subjectName);
         TextView NKHK = convertView.findViewById(R.id.subjectNKHK);
         TextView heSo = convertView.findViewById(R.id.subjectHS);
 
         Subject subject = data.get(position);
 
-        ImageView imageView = convertView.findViewById(R.id.button_edit_score_subject);
-        imageView.setOnClickListener(new View.OnClickListener() {
+        ImageView editBtn = convertView.findViewById(R.id.button_edit_score_subject);
+        editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ScoreStudentActivity.class);
@@ -54,6 +54,7 @@ public class ScoreSubjectAdapter extends ArrayAdapter<Subject> {
                 context.startActivity(intent);
             }
         });
+
         String subject_name = subject.getTenMH();
         String subject_NKHK = "Học kỳ: " + subject.getHocKy() + " Năm học: " + subject.getNamHoc();
         String subject_hs = "Hệ số: " + subject.getHeSo();

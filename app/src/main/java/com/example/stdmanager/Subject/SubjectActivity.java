@@ -36,7 +36,7 @@ public class SubjectActivity extends AppCompatActivity {
     private ArrayList<Subject> subjects = new ArrayList<>();
     private SubjectAdapter listViewModel;
     private SubjectDBHelper subjectDB = new SubjectDBHelper(this);
-    private AppCompatButton Btn_add, Btn_export;
+    private AppCompatButton Btn_add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +45,6 @@ public class SubjectActivity extends AppCompatActivity {
 
         this.subjectDB.open();
         this.weakActivity = new WeakReference<>(SubjectActivity.this);
-
-        /*The command line belows that make sure that keyboard only pops up only if user clicks into EditText */
-//        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         this.subjects = this.subjectDB.getAllSubjects();
 
@@ -61,7 +58,6 @@ public class SubjectActivity extends AppCompatActivity {
     private void setControl() {
         this.listView = findViewById(R.id.subjectListView);
         this.Btn_add = findViewById(R.id.subjectButtonCreation);
-        this.Btn_export = findViewById(R.id.subjectButtonExport);
     }
 
     private void setEvent() {
@@ -72,14 +68,6 @@ public class SubjectActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), SubjectAddActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        this.Btn_export.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SubjectExportActivity.class);
                 startActivity(intent);
             }
         });

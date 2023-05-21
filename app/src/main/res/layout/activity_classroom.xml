@@ -85,7 +85,8 @@
             android:layout_weight="0"
             android:background="@color/mainBackground"
             android:orientation="vertical"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/classroomButtonCreation"
@@ -93,13 +94,13 @@
                 android:background="@drawable/button_background_1"
                 android:text="@string/student_table_button_add" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/classroomButtonExport"
-                style="@style/button_style"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/button_background_2"
-                android:text="@string/student_table_button_export" />
+            <!--            <androidx.appcompat.widget.AppCompatButton-->
+            <!--                android:id="@+id/classroomButtonExport"-->
+            <!--                style="@style/button_style"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:layout_marginBottom="20dp"-->
+            <!--                android:background="@drawable/button_background_2"-->
+            <!--                android:text="@string/student_table_button_export" />-->
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -7,11 +7,6 @@ public class InputFilterMinMax implements InputFilter {
 
     private double min, max;
 
-    public InputFilterMinMax(double min, double max) {
-        this.min = min;
-        this.max = max;
-    }
-
     public InputFilterMinMax(String min, String max) {
         this.min = Double.parseDouble(min);
         this.max = Double.parseDouble(max);

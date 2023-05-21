@@ -25,7 +25,6 @@ public class Alert {
 
     public void normal() {
         dialog = new Dialog(context);
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.normal_alert);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(true);
@@ -35,7 +34,6 @@ public class Alert {
 
     public void confirm() {
         dialog = new Dialog(context);
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.confirm_alert);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(true);

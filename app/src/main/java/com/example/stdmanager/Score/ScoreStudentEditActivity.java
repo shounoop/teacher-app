@@ -21,48 +21,27 @@ import com.example.stdmanager.models.ScoreInfo;
 import com.example.stdmanager.models.Session;
 
 public class ScoreStudentEditActivity extends AppCompatActivity {
-
-    Session session;
-    ScoreInfo score;
-    ScoreDBHelper scoreDBHelper = new ScoreDBHelper(this);
-    TextView tvSubject;
-    TextView tvStudentID;
-    TextView tvStudentName;
-    EditText editScore;
-
-    AppCompatButton buttonSave;
-
-    Alert alert;
+    private Session session;
+    private ScoreInfo score;
+    private ScoreDBHelper scoreDBHelper = new ScoreDBHelper(this);
+    private TextView tvSubject, tvStudentID, tvStudentName;
+    private EditText editScore;
+    private AppCompatButton buttonSave;
+    private Alert alert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        session = new Session(ScoreStudentEditActivity.this);
         setContentView(R.layout.activity_score_student_edit);
+
+        session = new Session(ScoreStudentEditActivity.this);
         score = (ScoreInfo) getIntent().getSerializableExtra("score");
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         alert = new Alert(ScoreStudentEditActivity.this);
         alert.normal();
 
-        setControl();
-        setEvent();
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
+        this.setControl();
+        this.setEvent();
     }
 
     @SuppressLint("SetTextI18n")
@@ -81,7 +60,7 @@ public class ScoreStudentEditActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-        buttonSave.setOnClickListener(new View.OnClickListener() {
+        this.buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 double scoreValue = Double.parseDouble(editScore.getText().toString());
@@ -91,6 +70,7 @@ public class ScoreStudentEditActivity extends AppCompatActivity {
                 } else {
                     try {
                         score.setScore(scoreValue);
+
                         scoreDBHelper.update(score.getStudentID(), score.getSubjectID(), score.getScore());
                         alert.showAlert("Thay đổi điểm thành công", R.drawable.check_icon);
                     } catch (Exception ex) {
@@ -100,7 +80,8 @@ public class ScoreStudentEditActivity extends AppCompatActivity {
 
             }
         });
-        alert.btnOK.setOnClickListener(new View.OnClickListener() {
+
+        this.alert.btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 alert.btnOK.setOnClickListener(new View.OnClickListener() {

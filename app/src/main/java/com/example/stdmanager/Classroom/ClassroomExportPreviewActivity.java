@@ -18,10 +18,6 @@ import java.io.File;
 
 public class ClassroomExportPreviewActivity extends AppCompatActivity {
 
-    /**
-     * this activity - ClassroomExportPreviewActivity is used to show the JPEG file which is stored in sd card
-     */
-
     ImageView imageView;
 
     @Override
@@ -29,7 +25,6 @@ public class ClassroomExportPreviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_classroom_export_preview);
 
-        /*Pop up a notice that user must accept request READ | WRITE EXTERNAL STORAGE*/
         ActivityCompat.requestPermissions(ClassroomExportPreviewActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
 
         setControl();

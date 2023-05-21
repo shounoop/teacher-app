@@ -19,32 +19,31 @@ import java.util.ArrayList;
 
 
 public class EventListViewModel extends ArrayAdapter<Event> {
-
-    Context context;
-    int resource;
-    ArrayList<Event> objects;
-    OnEvent onEvent;
+    private Context context;
+    private int resource;
+    private ArrayList<Event> events;
+    private OnEvent onEvent;
 
     public void UpdateItem(Event ev, int Position) {
-        objects.set(Position, ev);
+        events.set(Position, ev);
         notifyDataSetChanged();
     }
 
     public void DeleteItem(Event ev, int Position) {
-        objects.remove(Position);
+        events.remove(Position);
         notifyDataSetChanged();
     }
 
-    public EventListViewModel(@NonNull Context context, int resource, @NonNull ArrayList<Event> objects, OnEvent onEvent) {
-        super(context, resource, objects);
+    public EventListViewModel(@NonNull Context context, int resource, @NonNull ArrayList<Event> events, OnEvent onEvent) {
+        super(context, resource, events);
         this.context = context;
         this.resource = resource;
-        this.objects = objects;
+        this.events = events;
         this.onEvent = onEvent;
     }
 
     public int count() {
-        return objects.size();
+        return events.size();
     }
 
     @NonNull
@@ -60,15 +59,8 @@ public class EventListViewModel extends ArrayAdapter<Event> {
         ImageView btn_edit = convertView.findViewById(R.id.btn_edit);
         ImageView btn_delete = convertView.findViewById(R.id.btn_delete);
 
-        btn_edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
         /*Step 2*/
-        Event event = objects.get(position);
+        Event event = events.get(position);
         String eventName = event.getNameEvent();
         String eventDateTime = event.getStartTime() + "-" + event.getEndTime() + " " + event.getDay();
         String eventPlace = event.getPlace();
@@ -78,7 +70,6 @@ public class EventListViewModel extends ArrayAdapter<Event> {
         datetime.setText(eventDateTime);
         place.setText(eventPlace);
 
-
         btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,7 +77,7 @@ public class EventListViewModel extends ArrayAdapter<Event> {
             }
         });
 
-// Thông báo xóa
+        // Thông báo xóa
         Alert alert = new Alert(context);
         alert.confirm();
 

@@ -44,9 +44,6 @@ public class GradeOpenHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    /**
-     * @param grade | object | the grade which is added to TABLE_GRADE
-     */
     public void create(Grade grade) {
         /*Step 1*/
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
@@ -66,9 +63,6 @@ public class GradeOpenHelper extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
-    /**
-     * @param grade | object | the grade which is deleted from TABLE_GRADE
-     */
     public void delete(Grade grade) {
         /*Step 1*/
         int id = grade.getId();
@@ -118,19 +112,17 @@ public class GradeOpenHelper extends SQLiteOpenHelper {
 
     public String retrieveNameById(int id) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+
         String query = "SELECT name FROM grade";
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
         String name = "";
+
         if (cursor.moveToFirst()) {
             name = cursor.getString(0);
         }
         return name;
     }
 
-    /**
-     * @param teacherId which is teacher Id
-     * @return grade id which teacher having @id is host
-     */
     public String retriveIdByTeachId(String teacherId) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         String query = String.format("SELECT g.id FROM grade g WHERE g.teacherId = %s", teacherId);
@@ -143,11 +135,6 @@ public class GradeOpenHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    /**
-     * retrieve number of grade
-     *
-     * @return int quantity
-     */
     private int count() {
         String query = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
@@ -160,9 +147,6 @@ public class GradeOpenHelper extends SQLiteOpenHelper {
         return quantity;
     }
 
-    /**
-     * create default records if there is nothing in Grade table
-     */
     public void createDefaultRecords() {
         /*Step 1*/
         int gradeQuantity = this.count();

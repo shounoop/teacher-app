@@ -14,17 +14,17 @@ import com.example.stdmanager.models.Event;
 
 
 public class EventActivityCreation extends AppCompatActivity {
-    Button saveEvent;
-    Button troVeBT;
-    EditText eventName, startEV, endEV, Place, Date;
+    private Button saveEvent;
+    private Button troVeBT;
+    private EditText eventName, startEV, endEV, Place, Date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_creation);
 
-        setControl();
-        setEvent();
+        this.setControl();
+        this.setEvent();
     }
 
     private void setEvent() {
@@ -51,6 +51,7 @@ public class EventActivityCreation extends AppCompatActivity {
                 finish();
             }
         });
+
         troVeBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

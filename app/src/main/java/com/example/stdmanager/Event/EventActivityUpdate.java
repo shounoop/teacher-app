@@ -19,10 +19,10 @@ import java.util.Date;
 
 
 public class EventActivityUpdate extends AppCompatActivity {
-    Event event;
-    EditText NameEv, StartEv, EndEV, DateEv, PlaceEV;
-    Button ConfirmUpdate;
-    EventDBHelper eventDBHelper;
+    private Event event;
+    private EditText NameEv, StartEv, EndEV, DateEv, PlaceEV;
+    private Button ConfirmUpdate;
+    private EventDBHelper eventDBHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,12 +32,12 @@ public class EventActivityUpdate extends AppCompatActivity {
         event = (Event) getIntent().getSerializableExtra("EV");
         eventDBHelper = new EventDBHelper(this);
 
-        setControl();
-        setEvent();
+        this.setControl();
+        this.setEvent();
     }
 
     private void setEvent() {
-        ConfirmUpdate.setOnClickListener(new View.OnClickListener() {
+        this.ConfirmUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 event.setNameEvent(NameEv.getText().toString().trim());
@@ -48,8 +48,10 @@ public class EventActivityUpdate extends AppCompatActivity {
 
                 if (eventDBHelper.UpdateEvent(event)) {
                     Toast.makeText(EventActivityUpdate.this, "Cap nhat thanh cong", Toast.LENGTH_SHORT).show();
+
                     Intent intent = new Intent();
                     intent.putExtra("Evupdate", event);
+
                     setResult(RESULT_OK, intent);
                     finish();
                 } else {
@@ -60,17 +62,17 @@ public class EventActivityUpdate extends AppCompatActivity {
     }
 
     private void setControl() {
-        NameEv = findViewById(R.id.eventNameupdate);
-        StartEv = findViewById(R.id.StartEVupdate);
-        EndEV = findViewById(R.id.endEVupdate);
-        DateEv = findViewById(R.id.dateEVupdate);
-        PlaceEV = findViewById(R.id.eventPlaceupdate);
-        ConfirmUpdate = findViewById(R.id.eventUpdateButtonConfirm);
+        this.NameEv = findViewById(R.id.eventNameupdate);
+        this.StartEv = findViewById(R.id.StartEVupdate);
+        this.EndEV = findViewById(R.id.endEVupdate);
+        this.DateEv = findViewById(R.id.dateEVupdate);
+        this.PlaceEV = findViewById(R.id.eventPlaceupdate);
+        this.ConfirmUpdate = findViewById(R.id.eventUpdateButtonConfirm);
 
-        NameEv.setText(event.getNameEvent());
-        StartEv.setText(event.getStartTime());
-        EndEV.setText(event.getEndTime());
-        DateEv.setText(event.getDay());
-        PlaceEV.setText(event.getPlace());
+        this.NameEv.setText(event.getNameEvent());
+        this.StartEv.setText(event.getStartTime());
+        this.EndEV.setText(event.getEndTime());
+        this.DateEv.setText(event.getDay());
+        this.PlaceEV.setText(event.getPlace());
     }
 }

@@ -40,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String fullNameText = fullName.getText().toString();
                 String passwordText = password.getText().toString();
 
-                Teacher newTeacher = new Teacher(4, fullNameText, passwordText);
+                Teacher newTeacher = new Teacher(868814071, fullNameText, passwordText);
 
                 try {
 

@@ -15,16 +15,15 @@ import com.example.stdmanager.models.Statistic;
 import java.util.ArrayList;
 
 public class StatisticActivity extends AppCompatActivity {
-    ListView listView;
-    ArrayList<Statistic> data = new ArrayList<>();
-    StatisticListViewModel listViewModel;
+    private ListView listView;
+    private ArrayList<Statistic> statistics = new ArrayList<>();
+    private StatisticListViewModel listViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistic);
 
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
         setControl();
         setEvent();
     }
@@ -34,11 +33,11 @@ public class StatisticActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-        this.data.add(new Statistic(1, "Xếp loại", "Xem thống kê một lớp ở học kỳ nhất định có bao nhiêu học sinh giỏi, khá,... theo bảng điểm đã có "));
-        this.data.add(new Statistic(2, "Phổ điểm tổng kết", "Xem phổ điểm của lớp học nào đó trong học kỳ nhất định"));
-        this.data.add(new Statistic(3, "Giới tính", "Thống kê giới tính của lớp theo từng học kỳ "));
+        this.statistics.add(new Statistic(1, "Xếp loại", "Xem thống kê một lớp ở học kỳ nhất định có bao nhiêu học sinh giỏi, khá,... theo bảng điểm đã có "));
+        this.statistics.add(new Statistic(2, "Phổ điểm tổng kết", "Xem phổ điểm của lớp học nào đó trong học kỳ nhất định"));
+        this.statistics.add(new Statistic(3, "Giới tính", "Thống kê giới tính của lớp theo từng học kỳ "));
 
-        this.listViewModel = new StatisticListViewModel(this, R.layout.activity_statistic_row, data);
+        this.listViewModel = new StatisticListViewModel(this, R.layout.activity_statistic_row, this.statistics);
         this.listView.setAdapter(listViewModel);
     }
 }

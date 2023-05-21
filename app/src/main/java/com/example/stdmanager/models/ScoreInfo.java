@@ -3,12 +3,9 @@ package com.example.stdmanager.models;
 import java.io.Serializable;
 
 public class ScoreInfo implements Serializable {
-    int studentID, subjectID;
-    double score;
-    String studentFullName, subjectName;
-
-    public ScoreInfo() {
-    }
+    private int studentID, subjectID;
+    private double score;
+    private String studentFullName, subjectName;
 
     public ScoreInfo(int studentID, int subjectID, double score, String studentFullName, String subjectName) {
         this.studentID = studentID;
@@ -22,16 +19,8 @@ public class ScoreInfo implements Serializable {
         return studentID;
     }
 
-    public void setStudentID(int studentID) {
-        this.studentID = studentID;
-    }
-
     public int getSubjectID() {
         return subjectID;
-    }
-
-    public void setSubjectID(int subjectID) {
-        this.subjectID = subjectID;
     }
 
     public double getScore() {
@@ -46,15 +35,7 @@ public class ScoreInfo implements Serializable {
         return studentFullName;
     }
 
-    public void setStudentFullName(String studentFullName) {
-        this.studentFullName = studentFullName;
-    }
-
     public String getSubjectName() {
         return subjectName;
-    }
-
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
     }
 }

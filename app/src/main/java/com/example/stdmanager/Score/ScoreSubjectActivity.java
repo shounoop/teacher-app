@@ -17,17 +17,19 @@ import com.example.stdmanager.models.Subject;
 import java.util.ArrayList;
 
 public class ScoreSubjectActivity extends AppCompatActivity {
-    SearchView scoreSearch;
-    ListView listView;
-    ArrayList<Subject> objects = new ArrayList<>();
-    ScoreSubjectAdapter listViewModel;
-    SubjectDBHelper subjectDB = new SubjectDBHelper(this);
+    private SearchView scoreSearch;
+    private ListView listView;
+    private ArrayList<Subject> subjects = new ArrayList<>();
+    private ScoreSubjectAdapter listViewModel;
+    private SubjectDBHelper subjectDB = new SubjectDBHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_subject);
-        objects = subjectDB.getAllSubjects();
+
+        subjects = subjectDB.getAllSubjects();
+
         setControl();
         setEvent();
         inItSearchWidgets();
@@ -39,7 +41,7 @@ public class ScoreSubjectActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-        listViewModel = new ScoreSubjectAdapter(this, R.layout.activity_score_subject_element, objects);
+        listViewModel = new ScoreSubjectAdapter(this, R.layout.activity_score_subject_element, subjects);
         listView.setAdapter(listViewModel);
     }
 
@@ -47,7 +49,6 @@ public class ScoreSubjectActivity extends AppCompatActivity {
         scoreSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-
                 return false;
             }
 
@@ -55,7 +56,7 @@ public class ScoreSubjectActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String s) {
                 ArrayList<Subject> filteredSubject = new ArrayList<Subject>();
 
-                for (Subject subject : objects) {
+                for (Subject subject : subjects) {
                     if (subject.getTenMH().toLowerCase().trim().contains(s.toLowerCase().trim())) {
                         filteredSubject.add(subject);
                     }

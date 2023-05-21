@@ -14,21 +14,16 @@
 
         <TextView
             style="@style/settings_account_edit_name_text_style"
+            android:layout_marginBottom="20dp"
             android:text="@string/firstName"
             android:textSize="40sp" />
 
-        <Space
-            style="@style/settings_account_edit_name_text_style"
-            android:minHeight="20dp" />
 
         <EditText
             android:id="@+id/settingsAccountEditTextName"
             style="@style/settings_account_edit_name_text_style"
+            android:layout_marginBottom="20dp"
             android:hint="@string/fullName" />
-
-        <Space
-            style="@style/settings_account_edit_name_text_style"
-            android:minHeight="20dp" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/settingsAccountButtonSaveName"

@@ -70,11 +70,6 @@ public class ClassroomExportActivity extends AppCompatActivity {
         setEvent();
     }
 
-    /**
-     * @path is the name of PDF file we need to open
-     * <p>
-     * Open PDF file
-     */
     private void openPDFfile(String path) {
         File file = new File(Environment.getExternalStorageDirectory() + "/sdcard/" + path);
 
@@ -95,11 +90,6 @@ public class ClassroomExportActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * @path is the name of JPEG file we need to open
-     * <p>
-     * Open JPEG file
-     */
     private void openJPEGfile() {
         Intent intent = new Intent(ClassroomExportActivity.this, ClassroomExportPreviewActivity.class);
         startActivity(intent);
@@ -150,9 +140,6 @@ public class ClassroomExportActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * set button and listen event click on button
-     */
     private void setEvent() {
         buttonPhoto.setOnClickListener(view -> {
             ViewGroup viewGroup = table;
@@ -172,15 +159,6 @@ public class ClassroomExportActivity extends AppCompatActivity {
         buttonGoBack.setOnClickListener(view -> finish());
     }
 
-    /**
-     * This function uses bitmap library - a pre-installed Android library so as to
-     * capture screen and store the photo into root directory
-     * <p>
-     * To check, open "View -> Tool Window -> Device File Explorer -> sdCard". We will see the stored photo
-     * Remember choose "Synchronize" to refresh sdCard
-     * <p>
-     * File name: DanhSachSinhVien.jpeg
-     */
     private static void screenshotToPhoto(View view, String filename) {
         try {
             String dirpath = Environment.getExternalStorageDirectory() + "";
@@ -207,22 +185,6 @@ public class ClassroomExportActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Create Pdf with iText 7 - a third-party library to instanciate and handle PDF file
-     * <p>
-     * To check, open "View -> Tool Window -> Device File Explorer -> sdCard". We will see the stored photo
-     * Remember choose "Synchronize" to refresh sdCard
-     * <p>
-     * File name: DanhSachSinhVien.pdf
-     * <p>
-     * Step 1: instanciate output PDF File
-     * Step 2: declare PdfWriter, PdfDocument and Document
-     * Step 3: declare number of column and dimension
-     * #   Ho   Ten    Gioi Tinh      Ngay Sinh
-     * Step 4: declare header
-     * Step 5: declare columns name
-     * Step 6: insert student information from database
-     */
     public void createPdfWithItext7(View v) {
         try {
             /*Step 1*/

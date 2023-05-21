@@ -22,12 +22,11 @@ import java.util.ArrayList;
 public class EventActivity extends AppCompatActivity implements OnEvent {
     public static WeakReference<EventActivity> weakReference;
     private ListView listViewEvent;
-    private ArrayList<Event> eventArrayList;
+    private ArrayList<Event> events;
     private EventListViewModel listViewModel;
     private SearchView EventSearch;
     private Button btn_addEvent;
     private int PositionUpdate = -1;
-
     private EventDBHelper db = new EventDBHelper(EventActivity.this);
 
     @Override
@@ -38,31 +37,25 @@ public class EventActivity extends AppCompatActivity implements OnEvent {
 
         weakReference = new WeakReference<>(EventActivity.this);
 
-        btn_addEvent = (Button) findViewById(R.id.eventButtonCreation);
-//        btn_exportEvent = (Button) findViewById(R.id.eventButtonExport);
-
         db.deletedAndCreateTable();
 
-        // get Data
-        eventArrayList = db.getAllEvents();
+        events = db.getAllEvents();
 
         setControl();
         setEvent();
         inItSearchWidgets();
+    }
 
+    private void setControl() {
+        listViewEvent = findViewById(R.id.eventListView);
+        EventSearch = findViewById(R.id.eventSearchView);
+        btn_addEvent = (Button) findViewById(R.id.eventButtonCreation);
     }
 
     private void setEvent() {
-        /**
-         * 1. Lấy data từ db
-         * 2. Gán data vào adapter.
-         * 3. đưa adapter vào listView
-         *
-         * Trong adapter có 1 layout -> tượng trung kiểu cho 1 dòng dữ liệu
-         */
-
-        listViewModel = new EventListViewModel(this, R.layout.activity_event_element, eventArrayList, this);
+        listViewModel = new EventListViewModel(this, R.layout.activity_event_element, events, this);
         listViewEvent.setAdapter(listViewModel);
+
         btn_addEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,13 +65,7 @@ public class EventActivity extends AppCompatActivity implements OnEvent {
         });
     }
 
-    private void setControl() {
-        listViewEvent = findViewById(R.id.eventListView);
-        EventSearch = findViewById(R.id.eventSearchView);
-    }
-
     private void inItSearchWidgets() {
-
         EventSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -89,7 +76,7 @@ public class EventActivity extends AppCompatActivity implements OnEvent {
             public boolean onQueryTextChange(String s) {
                 ArrayList<Event> filteredEvent = new ArrayList<>();
 
-                for (Event evt : eventArrayList) {
+                for (Event evt : events) {
                     if (evt.getNameEvent().toLowerCase().trim().contains(s.toLowerCase().trim())) {
                         filteredEvent.add(evt);
                     }
@@ -105,17 +92,15 @@ public class EventActivity extends AppCompatActivity implements OnEvent {
         listViewEvent.setAdapter(eventModel);
     }
 
-
     public void AddEvent(Event event) {
         if (db.AddEvent(event)) {
-            eventArrayList.add(event);
+            events.add(event);
             listViewModel.notifyDataSetChanged();
             Toast.makeText(this, "Them thanh cong", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Them that bai", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     @Override
     public void onEditEvent(Event event, int position) {
@@ -132,6 +117,7 @@ public class EventActivity extends AppCompatActivity implements OnEvent {
     }
 
     @Override
+    // handle the result returned by the child activity.
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100) {

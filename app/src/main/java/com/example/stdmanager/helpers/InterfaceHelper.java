@@ -6,12 +6,6 @@ import android.view.WindowManager;
 import android.widget.PopupWindow;
 
 public class InterfaceHelper {
-
-    /**
-     * this function helps us to blur current screen whenever popup window is activated
-     * <p>
-     * Path - https://stackoverflow.com/a/46711174
-     */
     public static void blurCurrentScreen(PopupWindow popupWindow) {
         View container = popupWindow.getContentView().getRootView();
         Context context = popupWindow.getContentView().getContext();

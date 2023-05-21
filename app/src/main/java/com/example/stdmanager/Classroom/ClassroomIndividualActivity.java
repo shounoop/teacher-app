@@ -53,10 +53,6 @@ public class ClassroomIndividualActivity extends AppCompatActivity {
         this.studentGender = findViewById(R.id.gender);
     }
 
-    /**
-     * Step 1: retrieve the 'student' object with condition that Student class implements Serializable
-     * Step 2: set text for these textView
-     */
     private void setScreen() {
         /*Step 1*/
         Student student = (Student) getIntent().getSerializableExtra("student");
@@ -116,9 +112,6 @@ public class ClassroomIndividualActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * update information
-     */
     public void updateStudent(Student student) {
         this.studentFamilyName.setText(student.getFamilyName());
         this.studentFirstName.setText(student.getFirstName());

@@ -11,15 +11,15 @@ import android.widget.Switch;
 import com.example.stdmanager.R;
 
 public class SettingsApplicationActivity extends AppCompatActivity {
-    SwitchCompat switchButton;
+    private SwitchCompat switchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_application);
 
-        setControl();
-        setEvent();
+        this.setControl();
+        this.setEvent();
     }
 
     private void setControl() {

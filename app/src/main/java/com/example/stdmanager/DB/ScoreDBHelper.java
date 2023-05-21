@@ -64,11 +64,10 @@ public class ScoreDBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Score> getAll() {
-        Log.i(TAG, "Score.getAll ... ");
-
         ArrayList<Score> scores = new ArrayList<>();
+
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_NAME;
+        String selectQuery = "SELECT * FROM " + TABLE_NAME;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -91,12 +90,12 @@ public class ScoreDBHelper extends SQLiteOpenHelper {
         return scores;
     }
 
-    public ArrayList<Score> getStudentAndSubject(String student, String subject) {
-        Log.i(TAG, "Score.getAll ... ");
-
+    // get tất cả điểm theo mã sv và mã mh
+    public ArrayList<Score> getStudentAndSubject(String studentId, String maMH) {
         ArrayList<Score> scores = new ArrayList<>();
+
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE MAHS = '" + student + "' AND MAMH = '" + subject + "'";
+        String selectQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE MAHS = '" + studentId + "' AND MAMH = '" + maMH + "'";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -119,10 +118,9 @@ public class ScoreDBHelper extends SQLiteOpenHelper {
         return scores;
     }
 
+    //
     public ArrayList<ReportScore> getReportScore() {
-        Log.i(TAG, "Score.getAll ... ");
-
-        ArrayList<ReportScore> scores = new ArrayList<>();
+        ArrayList<ReportScore> reportScores = new ArrayList<>();
         // Select All Query
         String selectQuery = String.format("SELECT s.id, ROUND(CAST(SUM (sc.DIEM * sj.HESO) AS float)  /  CAST(SUM ( sj.HESO)  AS float ) , 2) AS DIEM " + "FROM STUDENT s " + "INNER JOIN SCORES sc " + "ON sc.MAHS = s.id " + "INNER JOIN SUBJECT sj " + "ON sj.MAMH = sc.MAMH " + "WHERE s.id > 0 " + "GROUP BY s.id");
 
@@ -133,22 +131,24 @@ public class ScoreDBHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 try {
-                    ReportScore score = new ReportScore();
-                    score.setMaHS(Integer.parseInt(cursor.getString(0)));
-                    score.setDiem(Double.valueOf(cursor.getString(1)));
-                    scores.add(score);
+                    ReportScore reportScore = new ReportScore();
+                    reportScore.setMaHS(Integer.parseInt(cursor.getString(0)));
+                    reportScore.setDiem(Double.valueOf(cursor.getString(1)));
+
+                    reportScores.add(reportScore);
                 } catch (Exception exception) {
                     Log.i(TAG, "ScoreDHelper.getAll error ");
                 }
             } while (cursor.moveToNext());
         }
-        return scores;
+
+        // return list medium score of students
+        return reportScores;
     }
 
     public ArrayList<ReportTotal> getReportCountByScore(int MAMH) {
-        Log.i(TAG, "Score.getAll ... ");
+        ArrayList<ReportTotal> reportTotals = new ArrayList<>();
 
-        ArrayList<ReportTotal> scores = new ArrayList<>();
         // Select All Query
         String selectQuery = String.format("SELECT sc.DIEM, COUNT(sc.MAHS) AS AMOUNT " + "FROM SCORES sc " + "WHERE sc.MAMH = %d " + "GROUP BY sc.DIEM", MAMH);
 
@@ -159,17 +159,18 @@ public class ScoreDBHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 try {
-                    ReportTotal score = new ReportTotal();
-                    score.setName(String.valueOf(cursor.getString(0)));
-                    score.setValue(Double.valueOf(cursor.getString(1)));
-                    scores.add(score);
+                    ReportTotal reportTotal = new ReportTotal();
+                    reportTotal.setName(String.valueOf(cursor.getString(0)));
+                    reportTotal.setValue(Double.valueOf(cursor.getString(1)));
+
+                    reportTotals.add(reportTotal);
                 } catch (Exception exception) {
                     Log.i(TAG, "ScoreDHelper.getAll error ");
                 }
 
             } while (cursor.moveToNext());
         }
-        return scores;
+        return reportTotals;
     }
 
     private void createDefaultRecords() {

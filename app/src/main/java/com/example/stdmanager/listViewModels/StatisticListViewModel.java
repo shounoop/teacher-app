@@ -25,20 +25,19 @@ import com.example.stdmanager.models.Student;
 import java.util.ArrayList;
 
 public class StatisticListViewModel extends ArrayAdapter<Statistic> {
+    private Context context;
+    private int resource;
+    private ArrayList<Statistic> statistics;
 
-    Context context;
-    int resource;
-    ArrayList<Statistic> data;
-
-    public StatisticListViewModel(@NonNull Context context, int resource, @NonNull ArrayList<Statistic> data) {
-        super(context, resource, data);
+    public StatisticListViewModel(@NonNull Context context, int resource, @NonNull ArrayList<Statistic> statistics) {
+        super(context, resource, statistics);
         this.context = context;
         this.resource = resource;
-        this.data = data;
+        this.statistics = statistics;
     }
 
     public int count() {
-        return data.size();
+        return statistics.size();
     }
 
     @NonNull
@@ -50,28 +49,28 @@ public class StatisticListViewModel extends ArrayAdapter<Statistic> {
         TextView text = convertView.findViewById(R.id.textStatistic);
         ImageButton btnEdit = convertView.findViewById(R.id.btnEdit);
 
-        Statistic entry = data.get(position);
+        Statistic statistic = statistics.get(position);
 
-        title.setText(entry.getTitle());
-        text.setText(entry.getText());
+        title.setText(statistic.getTitle());
+        text.setText(statistic.getText());
 
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (entry.getId()) {
+                switch (statistic.getId()) {
                     case 1:
                         Intent intent1 = new Intent(context, RankedStatsActivity.class);
-                        intent1.putExtra("detail", entry);
+                        intent1.putExtra("detail", statistic);
                         ((StatisticActivity) context).startActivity(intent1);
                         break;
                     case 2:
                         Intent intent2 = new Intent(context, SubjectListActivity.class);
-                        intent2.putExtra("detail", entry);
+                        intent2.putExtra("detail", statistic);
                         ((StatisticActivity) context).startActivity(intent2);
                         break;
                     case 3:
                         Intent intent3 = new Intent(context, GenderStatsActivity.class);
-                        intent3.putExtra("detail", entry);
+                        intent3.putExtra("detail", statistic);
                         ((StatisticActivity) context).startActivity(intent3);
                         break;
                     default:

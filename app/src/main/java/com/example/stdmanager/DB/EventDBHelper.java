@@ -104,6 +104,7 @@ public class EventDBHelper extends SQLiteOpenHelper {
 
     public boolean UpdateEvent(Event event) {
         Log.i(TAG, "UPDATE EVENT " + event.getNameEvent());
+
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_nameEvent, event.getNameEvent());

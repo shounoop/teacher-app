@@ -85,7 +85,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:orientation="vertical"
-            android:paddingTop="16dp">
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/subjectButtonCreation"
@@ -93,13 +94,13 @@
                 android:background="@drawable/button_background_1"
                 android:text="@string/AddSubject" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/subjectButtonExport"
-                style="@style/button_style"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/button_background_2"
-                android:text="@string/ExportSubject" />
+<!--            <androidx.appcompat.widget.AppCompatButton-->
+<!--                android:id="@+id/subjectButtonExport"-->
+<!--                style="@style/button_style"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_marginBottom="20dp"-->
+<!--                android:background="@drawable/button_background_2"-->
+<!--                android:text="@string/ExportSubject" />-->
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

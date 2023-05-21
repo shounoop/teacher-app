@@ -19,10 +19,9 @@ import com.example.stdmanager.models.ScoreInfo;
 import java.util.ArrayList;
 
 public class ScoreStudentAdapter extends ArrayAdapter<ScoreInfo> {
-
-    Context context;
-    int resource;
-    ArrayList<ScoreInfo> data;
+    private Context context;
+    private int resource;
+    private ArrayList<ScoreInfo> data;
 
     public ScoreStudentAdapter(@NonNull Context context, int resource, @NonNull ArrayList<ScoreInfo> data) {
         super(context, resource, data);
@@ -39,6 +38,7 @@ public class ScoreStudentAdapter extends ArrayAdapter<ScoreInfo> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         convertView = LayoutInflater.from(context).inflate(resource, null);
 
+        // init view
         TextView tvStudentID = convertView.findViewById(R.id.student_code);
         TextView tvStudentName = convertView.findViewById(R.id.student_full_name);
         TextView tvStudentScore = convertView.findViewById(R.id.student_score);
@@ -49,8 +49,8 @@ public class ScoreStudentAdapter extends ArrayAdapter<ScoreInfo> {
         String studentFullName = score.getStudentFullName();
         String studentScore = String.valueOf(score.getScore());
 
-        ImageView imageView = convertView.findViewById(R.id.button_edit_score_subject);
-        imageView.setOnClickListener(new View.OnClickListener() {
+        ImageView editBtn = convertView.findViewById(R.id.button_edit_score_subject);
+        editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ScoreStudentEditActivity.class);

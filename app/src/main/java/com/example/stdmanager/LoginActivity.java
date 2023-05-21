@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         checkAuth();
         setControl();
         setEvent();
-        createSampleData();
+//        createSampleData();
     }
 
     private void checkAuth() {

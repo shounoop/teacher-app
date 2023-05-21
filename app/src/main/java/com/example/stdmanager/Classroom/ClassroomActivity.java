@@ -37,51 +37,34 @@ import java.util.Locale;
 
 public class ClassroomActivity extends AppCompatActivity {
     public static WeakReference<ClassroomActivity> weakActivity;
-
     private Session session;
-
     private ClassroomListViewModel listViewModel;
     private ListView listView;
     private ArrayList<Student> students = new ArrayList<>();
     private ArrayList<Grade> gradeObjects;
     private GradeOpenHelper gradeOpenHelper = new GradeOpenHelper(this);
     private StudentOpenHelper studentOpenHelper = new StudentOpenHelper(this);
-
-    private AppCompatButton buttonCreation, buttonExport;
+    private AppCompatButton buttonCreation;
     private SearchView searchView;
 
-    /**
-     * Step 1: declare local variable
-     * Step 2: set default records up
-     * Step 3: set Control to components
-     * Step 4: listening events which is triggered by components
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /* Step 1 */
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_classroom);
 
         this.weakActivity = new WeakReference<>(ClassroomActivity.this);
         this.session = new Session(ClassroomActivity.this);
 
-        /* The command line belows that make sure that keyboard only pops up only if user clicks into EditText */
-//        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        /* Step 2 */
         // get all grades
         this.gradeObjects = gradeOpenHelper.retrieveAllGrades();
         // get all students
         this.students = studentOpenHelper.retrieveAllStudents();
 
-        /* Step 3 */
         setControl();
 
-        /* Step 4 */
         setEvent();
         searchByKeyword();
 
-        /* Step 5 */
         String teacherId = this.session.get("teacherId");
         String value = gradeOpenHelper.retriveIdByTeachId(teacherId);
         this.session.set("gradeId", value);
@@ -94,14 +77,9 @@ public class ClassroomActivity extends AppCompatActivity {
     private void setControl() {
         this.listView = findViewById(R.id.classroomListView);
         this.buttonCreation = findViewById(R.id.classroomButtonCreation);
-        this.buttonExport = findViewById(R.id.classroomButtonExport);
         this.searchView = findViewById(R.id.classroomSearchView);
     }
 
-    /**
-     * Step 1: declare list view & list view model
-     * Step 2: listen events which is triggered by component
-     */
     private void setEvent() {
         /*Step 1*/
         this.listViewModel = new ClassroomListViewModel(this, R.layout.activity_classroom_element, students);
@@ -112,11 +90,8 @@ public class ClassroomActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Student student = (Student) adapterView.getAdapter().getItem(position);
 
-                /*Open the screen which shows student's detail*/
                 Intent intent = new Intent(ClassroomActivity.this, ClassroomIndividualActivity.class);
-                /*Pass student object to next activity - Student class must implements Serializable*/
                 intent.putExtra("student", student);
-                /*start next activity*/
                 startActivity(intent);
             }
         });
@@ -129,65 +104,37 @@ public class ClassroomActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        this.buttonExport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ClassroomActivity.this, ClassroomExportActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
-    /**
-     * Step 1: add the new student to object - like AJAX to load static data
-     * Step 2: add the new student to database
-     * Step 3: notify data changed !
-     * Step 4: toast to show notice on screen
-     */
     public void createStudent(Student student) {
         /* Temporary Solution so as to the Grade Name is null */
         student.setGradeName(this.students.get(0).getGradeName());
 
-        /*Step 1*/
         this.students.add(student);
 
-        /*Step 2*/
         this.studentOpenHelper.create(student);
 
-        /*Step 3*/
         this.listViewModel.notifyDataSetChanged();
 
-        /*Step 4*/
         Toast.makeText(this, "Thêm thành công", Toast.LENGTH_LONG).show();
     }
 
-    /**
-     * Step 1: objects.remove(student) make notifyDataSetChanged doesn't work
-     * Step 2: notifyDataSetChanged immediately !
-     * Step 3: delete student in database table
-     * Step 4: Toast to show notice on screen
-     */
     public void deleteStudent(Student student) {
         if (student.getId() == 0) {
             Toast.makeText(this, "ID không hợp lệ", Toast.LENGTH_LONG).show();
             return;
         }
 
-        /*Step 1*/
         for (int i = 0; i < this.students.size(); i++) {
             if (this.students.get(i).getId() == student.getId()) {
                 this.students.remove(this.students.get(i));
             }
         }
 
-        /*Step 2*/
         this.listViewModel.notifyDataSetChanged();
 
-        /*Step 3*/
         this.studentOpenHelper.delete(student);
 
-        /*Step 4*/
         Toast.makeText(this, "Xóa thành công", Toast.LENGTH_LONG).show();
     }
 

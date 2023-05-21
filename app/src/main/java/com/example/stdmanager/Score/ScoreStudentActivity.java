@@ -47,54 +47,87 @@ import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class ScoreStudentActivity extends AppCompatActivity {
-
     Session session;
+    private int pageHeight = 1120;
+    private int pagewidth = 792;
 
-    int pageHeight = 1120;
-    int pagewidth = 792;
+    private ListView listView;
+    private Subject subject;
+    private ArrayList<Score> objects = new ArrayList<>();
+    private ArrayList<ScoreInfo> scoreInfoArrayList = new ArrayList<>();
+    private ScoreStudentAdapter listViewModel;
 
-    ListView listView;
-    Subject subject;
-    ArrayList<Score> objects = new ArrayList<>();
-    ArrayList<ScoreInfo> scores = new ArrayList<>();
-    ScoreStudentAdapter listViewModel;
+    private GradeOpenHelper gradeOpenHelper = new GradeOpenHelper(this);
+    private ScoreDBHelper scoreDBHelper = new ScoreDBHelper(this);
+    private StudentOpenHelper studentDB = new StudentOpenHelper(this);
 
-    GradeOpenHelper gradeOpenHelper = new GradeOpenHelper(this);
-    ScoreDBHelper scoreDBHelper = new ScoreDBHelper(this);
-    StudentOpenHelper studentDB = new StudentOpenHelper(this);
-
-    TextView tvSubject;
-    SearchView searchView;
-    String teacher;
-    String grade;
-    String gradeName;
-    AppCompatButton buttonSave;
-    Bitmap bmp, scaledbmp;
+    private TextView tvSubject;
+    private SearchView searchView;
+    private String teacher;
+    private String grade;
+    private String gradeName;
 
     private static final int PERMISSION_REQUEST_CODE = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        bmp = BitmapFactory.decodeResource(getResources(), R.drawable.avatar);
-        scaledbmp = Bitmap.createScaledBitmap(bmp, 10, 10, false);
+        setContentView(R.layout.activity_score_student);
 
         session = new Session(ScoreStudentActivity.this);
         teacher = session.get("teacherId");
+
         grade = gradeOpenHelper.retriveIdByTeachId(teacher);
         gradeName = gradeOpenHelper.retrieveNameById(Integer.parseInt(grade));
-        setContentView(R.layout.activity_score_student);
+
         subject = (Subject) getIntent().getSerializableExtra("subject");
-        if (checkPermission()) {
-            Log.i("Gain permistion", "Permission Granted");
-        } else {
-            requestPermission();
-        }
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         objects = scoreDBHelper.getAll();
+
         setControl();
         setEvent();
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setControl() {
+        this.listView = findViewById(R.id.score_student_list_view);
+        this.searchView = findViewById(R.id.score_student_search_bar);
+        this.tvSubject = findViewById(R.id.score_student_subject_name);
+
+        this.tvSubject.setText("Môn học: " + subject.getTenMH());
+    }
+
+    private void setEvent() {
+        addStudentScore();
+
+        try {
+            scoreInfoArrayList = getData();
+            listViewModel = new ScoreStudentAdapter(this, R.layout.activity_score_student_element, scoreInfoArrayList);
+            listView.setAdapter(listViewModel);
+        } catch (NullPointerException ex) {
+            finish();
+        }
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                ScoreStudentActivity.this.listViewModel.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                ArrayList<ScoreInfo> filtered = new ArrayList<>();
+                for (ScoreInfo score : scoreInfoArrayList) {
+                    if (score.getStudentFullName().toLowerCase().trim().contains(newText.toLowerCase().trim()) || String.valueOf(score.getStudentID()).toLowerCase().trim().contains(newText.toLowerCase().trim())) {
+                        filtered.add(score);
+                    }
+                }
+
+                filteredScore(filtered);
+                return false;
+            }
+        });
     }
 
     @Override
@@ -109,77 +142,36 @@ public class ScoreStudentActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    // nếu một hs nào đó chưa có điểm của môn học này thì thêm điểm 0 vào db
     private void addStudentScore() {
         ArrayList<Student> students = studentDB.getStudentInGrade(grade);
+
         for (Student student : students) {
-            ArrayList<Score> sc = scoreDBHelper.getStudentAndSubject(String.valueOf(student.getId()), String.valueOf(subject.getMaMH()));
-            if (sc.size() > 0) continue;
-            ;
+            ArrayList<Score> scoresByStudentIdAndSubjectId = scoreDBHelper.getStudentAndSubject(String.valueOf(student.getId()), String.valueOf(subject.getMaMH()));
+
+            if (scoresByStudentIdAndSubjectId.size() > 0) continue;
+
             Score score = new Score(student.getId(), subject.getMaMH(), 0);
             scoreDBHelper.add(score);
         }
     }
 
     private ArrayList<ScoreInfo> getData() {
-        ArrayList<ScoreInfo> scores = new ArrayList<>();
+        ArrayList<ScoreInfo> scoreInfoArrayList = new ArrayList<>();
         ArrayList<Student> students = studentDB.getStudentInGrade(grade);
+
         for (Student student : students) {
-            ArrayList<Score> sc = scoreDBHelper.getStudentAndSubject(String.valueOf(student.getId()), String.valueOf(subject.getMaMH()));
-            if (sc.size() <= 0) {
+            ArrayList<Score> scoresByStudentIdAndSubjectId = scoreDBHelper.getStudentAndSubject(String.valueOf(student.getId()), String.valueOf(subject.getMaMH()));
+            if (scoresByStudentIdAndSubjectId.size() <= 0) {
                 return null;
             }
-            Score i = sc.get(0);
+
+            // lấy điểm đầu tiên
+            Score i = scoresByStudentIdAndSubjectId.get(0);
             ScoreInfo sci = new ScoreInfo(i.getMaHS(), i.getMaMH(), i.getDiem(), student.getFamilyName() + " " + student.getFirstName(), subject.getTenMH());
-            scores.add(sci);
+            scoreInfoArrayList.add(sci);
         }
-        return scores;
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void setControl() {
-        listView = findViewById(R.id.score_student_list_view);
-        searchView = findViewById(R.id.score_student_search_bar);
-        tvSubject = findViewById(R.id.score_student_subject_name);
-        buttonSave = findViewById(R.id.button_score_student_save_pdf);
-        tvSubject.setText("Môn học: " + subject.getTenMH());
-    }
-
-    private void setEvent() {
-        addStudentScore();
-        buttonSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                generatePDF();
-            }
-        });
-        try {
-            scores = getData();
-            scores.size();
-            listViewModel = new ScoreStudentAdapter(this, R.layout.activity_score_student_element, scores);
-            listView.setAdapter(listViewModel);
-        } catch (NullPointerException ex) {
-            finish();
-            Log.e("ScoreStudentActivity", "lỗi lấy danh sách sinh viên bị rỗng");
-        }
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                ScoreStudentActivity.this.listViewModel.getFilter().filter(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                ArrayList<ScoreInfo> filtered = new ArrayList<>();
-                for (ScoreInfo score : scores) {
-                    if (score.getStudentFullName().toLowerCase().trim().contains(newText.toLowerCase().trim()) || String.valueOf(score.getStudentID()).toLowerCase().trim().contains(newText.toLowerCase().trim())) {
-                        filtered.add(score);
-                    }
-                }
-                filteredScore(filtered);
-                return false;
-            }
-        });
+        return scoreInfoArrayList;
     }
 
     private void generatePDF() {
@@ -206,7 +198,7 @@ public class ScoreStudentActivity extends AppCompatActivity {
         title.setTextAlign(Paint.Align.CENTER);
 
         int y = 130;
-        for (ScoreInfo score : scores) {
+        for (ScoreInfo score : scoreInfoArrayList) {
             if (y >= 1000) {
                 y = 130;
             }
@@ -226,35 +218,6 @@ public class ScoreStudentActivity extends AppCompatActivity {
             Toast.makeText(ScoreStudentActivity.this, "PDF file generated Failed.", Toast.LENGTH_SHORT).show();
         }
         pdfDocument.close();
-    }
-
-    private boolean checkPermission() {
-        int permission1 = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
-        int permission2 = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
-        return permission1 == PackageManager.PERMISSION_GRANTED && permission2 == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private void requestPermission() {
-        ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0) {
-
-                boolean writeStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                boolean readStorage = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-
-                if (writeStorage && readStorage) {
-                    Toast.makeText(this, "Permission Granted..", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "Permission Denined.", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            }
-        }
     }
 
     private void filteredScore(ArrayList<ScoreInfo> filtered) {

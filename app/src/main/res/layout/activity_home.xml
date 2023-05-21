@@ -30,7 +30,7 @@
                 android:id="@+id/btnHomeClassroom"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@drawable/list" />
+                android:background="@drawable/img" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                 android:id="@+id/btnHomeSubject"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@drawable/subject"
+                android:background="@drawable/img_1"
                 tools:ignore="ContentDescription" />
 
             <TextView
@@ -74,7 +74,7 @@
                 android:id="@+id/btnHomeEvent"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@drawable/event"
+                android:background="@drawable/img_2"
                 tools:ignore="ContentDescription" />
 
             <TextView
@@ -103,7 +103,7 @@
                 android:id="@+id/btnHomeScore"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@drawable/mark"
+                android:background="@drawable/img_3"
                 android:contentDescription="TODO" />
 
             <TextView
@@ -125,7 +125,7 @@
                 android:id="@+id/btnHomeStatistic"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@drawable/statistic"
+                android:background="@drawable/img_4"
                 tools:ignore="ContentDescription" />
 
             <TextView
@@ -148,7 +148,7 @@
                 android:id="@+id/btnHomeAccount"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@drawable/account"
+                android:background="@drawable/img_5"
                 tools:ignore="ContentDescription" />
 
             <TextView

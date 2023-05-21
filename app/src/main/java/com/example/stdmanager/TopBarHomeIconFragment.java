@@ -42,7 +42,6 @@ public class TopBarHomeIconFragment extends Fragment {
     private void setEvent() {
         this.btnHome.setOnClickListener(view -> {
             Intent mainActivity = new Intent(activity, HomeActivity.class);
-            mainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(mainActivity);
             activity.finish();
         });

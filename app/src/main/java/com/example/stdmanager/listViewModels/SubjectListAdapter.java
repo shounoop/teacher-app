@@ -26,27 +26,24 @@ import com.example.stdmanager.models.Subject;
 import java.util.ArrayList;
 
 public class SubjectListAdapter extends ArrayAdapter<Subject> {
-    /*
-     * Declare global variable
-     * */ ImageView btn_Edit;
+    private ImageView btn_Edit;
+    private Subject subject;
+    private Statistic statistic;
+    private Context context;
+    private int resource;
+    private ArrayList<Subject> subjects;
 
-    Subject subject;
-    Statistic statistic;
-    Context context;
-    int resource;
-    ArrayList<Subject> data;
-
-    public SubjectListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Subject> data, Statistic statistic) {
-        super(context, resource, data);
+    public SubjectListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Subject> subjects, Statistic statistic) {
+        super(context, resource, subjects);
         this.context = context;
         this.resource = resource;
-        this.data = data;
+        this.subjects = subjects;
         this.statistic = statistic;
     }
 
     @Override
     public int getCount() {
-        return data.size();
+        return subjects.size();
     }
 
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -58,7 +55,7 @@ public class SubjectListAdapter extends ArrayAdapter<Subject> {
         TextView NKHK = convertView.findViewById(R.id.subjectNKHK);
         TextView heSo = convertView.findViewById(R.id.subjectHS);
 
-        subject = data.get(position);
+        subject = subjects.get(position);
         String subject_name = subject.getTenMH();
         String subject_NKHK = "Học kỳ: " + subject.getHocKy() + " Năm học: " + subject.getNamHoc();
         String subject_hs = "Hệ số: " + subject.getHeSo();
@@ -70,9 +67,10 @@ public class SubjectListAdapter extends ArrayAdapter<Subject> {
         btn_Edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Subject subject1 = data.get(position);
+                Subject subject = subjects.get(position);
+
                 Intent intent = new Intent(context, MarkStatsActivity.class);
-                intent.putExtra("Subject", subject1);
+                intent.putExtra("Subject", subject);
                 intent.putExtra("Statistic", statistic);
                 context.startActivity(intent);
             }

@@ -131,18 +131,16 @@ public class TeacherDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public int updateTeacher(Teacher Teacher) {
-        Log.i(TAG, "TeacherDBHelper.updateTeacher ... " + Teacher.getName());
-
+    public int updateTeacher(Teacher teacher) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_ID, Teacher.getId());
-        values.put(COLUMN_NAME, Teacher.getName());
-        values.put(COLUMN_PASSWORD, Teacher.getPassword());
+        values.put(COLUMN_ID, teacher.getId());
+        values.put(COLUMN_NAME, teacher.getName());
+        values.put(COLUMN_PASSWORD, teacher.getPassword());
 
         // updating row
-        return db.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(Teacher.getId())});
+        return db.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(teacher.getId())});
     }
 
     public void deleteTeacher(Teacher Teacher) {

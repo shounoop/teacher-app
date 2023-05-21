@@ -1,13 +1,10 @@
 package com.example.stdmanager.Statistic;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Environment;
-import android.view.View;
 import android.widget.TextView;
+
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
@@ -21,98 +18,74 @@ import com.example.stdmanager.helpers.Alert;
 import com.example.stdmanager.models.ReportScore;
 import com.example.stdmanager.models.ReportTotal;
 import com.example.stdmanager.models.Statistic;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class RankedStatsActivity extends AppCompatActivity {
-
-    TextView title;
-    Statistic item;
-    AppCompatButton btnExport;
-    AnyChartView anyChartView;
-
-    Alert alert;
-    ScoreDBHelper db = new ScoreDBHelper(this);
-    ArrayList<ReportTotal> listData = new ArrayList<>();
-    String ranked[] = new String[]{"Giỏi", "Khá", "Trung bình", "Yếu"};
+    private TextView title;
+    private Statistic statistic;
+    private AnyChartView anyChartView;
+    private Alert alert;
+    private ScoreDBHelper db = new ScoreDBHelper(this);
+    private ArrayList<ReportTotal> reportTotals = new ArrayList<>();
+    private String ranked[] = new String[]{"Giỏi", "Khá", "Trung bình", "Yếu"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranked_stats);
 
-        item = (Statistic) getIntent().getSerializableExtra("detail");
-        alert = new Alert(RankedStatsActivity.this);
-        alert.normal();
+        this.statistic = (Statistic) getIntent().getSerializableExtra("detail");
+        this.alert = new Alert(RankedStatsActivity.this);
+        this.alert.normal();
 
-        setControl();
-        setData();
-        setEvent();
+        this.setControl();
+        this.setData();
+        this.setEvent();
 
-        setupPieChart();
-    }
-
-    private void setData() {
-        title.setText("Thống kê " + item.getTitle());
-    }
-
-    private void setEvent() {
-        btnExport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createExcel(view);
-                alert.showAlert("Xuất thành công!", R.drawable.check_icon);
-            }
-        });
-
-        alert.btnOK.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alert.dismiss();
-            }
-        });
+        this.setupPieChart();
     }
 
     private void setControl() {
-        title = findViewById(R.id.title);
-        btnExport = findViewById(R.id.btnExport);
+        this.title = findViewById(R.id.title);
 
-        anyChartView = findViewById(R.id.any_chart_view);
-        anyChartView.setProgressBar(findViewById(R.id.progress_bar));
+        this.anyChartView = findViewById(R.id.any_chart_view);
+    }
+
+    private void setData() {
+        title.setText("Thống kê " + statistic.getTitle());
+    }
+
+    private void setEvent() {
     }
 
     private void setupPieChart() {
-        Pie pie = AnyChart.pie();
-
-        List<DataEntry> data = new ArrayList<>();
-        ArrayList<ReportScore> reportScore = db.getReportScore();
+        List<DataEntry> dataEntries = new ArrayList<>();
+        ArrayList<ReportScore> reportScores = db.getReportScore();
 
         for (int i = 0; i < ranked.length; i++) {
             int count = 0;
-            for (int j = 0; j < reportScore.size(); j++) {
-                String pointRank = getXepLoai(reportScore.get(j).getDiem());
+            for (int j = 0; j < reportScores.size(); j++) {
+                String pointRank = getXepLoai(reportScores.get(j).getDiem());
                 if (pointRank.equals(ranked[i])) {
                     count++;
                 }
             }
 
-            listData.add(new ReportTotal(ranked[i], Double.valueOf(count)));
-            data.add(new ValueDataEntry(ranked[i], count));
+            reportTotals.add(new ReportTotal(ranked[i], Double.valueOf(count)));
+            dataEntries.add(new ValueDataEntry(ranked[i], count));
         }
 
-        pie.data(data);
-        pie.palette(new String[]{"#61CDBB", "#E8A838", "#DC143C", "#473F97"});
-        pie.title(item.getTitle());
-        pie.labels().position("outside");
+//        use the AnyChart library to create and configure a pie chart
 
+//        initializes a pie chart instance.
+        Pie pie = AnyChart.pie();
+
+        pie.data(dataEntries);
+        pie.palette(new String[]{"#61CDBB", "#E8A838", "#DC143C", "#473F97"});
+        pie.title(statistic.getTitle());
+        pie.labels().position("outside");
         pie.legend().position("center-bottom").itemsLayout(LegendLayout.HORIZONTAL).align(Align.CENTER);
 
         anyChartView.setChart(pie);
@@ -127,55 +100,6 @@ public class RankedStatsActivity extends AppCompatActivity {
             return "Trung bình";
         } else {
             return "Yếu";
-        }
-    }
-
-    public void createExcel(View view) {
-        HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
-        HSSFSheet hssfSheet = hssfWorkbook.createSheet();
-
-        ArrayList<String> headers = new ArrayList<>();
-        headers.add("Xếp loại");
-        headers.add("Tổng công");
-
-        HSSFRow hssfRow = hssfSheet.createRow(0);
-        for (int i = 0; i < headers.size(); i++) {
-            HSSFCell hssfCell = hssfRow.createCell(i);
-            hssfCell.setCellValue(headers.get(i));
-        }
-
-        for (int i = 0; i < listData.size(); i++) {
-            HSSFRow hssfRow1 = hssfSheet.createRow(i + 1);
-
-            HSSFCell hssfCell = hssfRow1.createCell(0);
-            hssfCell.setCellValue(listData.get(i).getName());
-
-            HSSFCell hssfCell1 = hssfRow1.createCell(1);
-            hssfCell1.setCellValue(listData.get(i).getValue());
-        }
-
-        try {
-            @SuppressLint("SdCardPath") String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/ThongKeXepLoai.xls";
-            File file = new File(path);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-
-            FileOutputStream output = new FileOutputStream(file);
-            hssfWorkbook.write(output);
-
-            if (output != null) {
-                output.flush();
-                output.close();
-            }
-
-            hssfWorkbook.cloneSheet(0);
-            hssfWorkbook.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
